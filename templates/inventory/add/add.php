@@ -1,5 +1,8 @@
 <?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
 
 
 ?>
@@ -199,7 +202,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
             
                  <div class="input-group">
                    <span class="input-group-addon"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
-                   <input type="text" class="form-control" name="subtest_name" id="subtest_name" aria-describedby="subtest_name">
+                   <input type="text" class="form-control" name="subtest_name" id="subtest_name" aria-describedby="subtest_name" value="<?php if(isset($save_subtest)&&$save_subtest=="error") echo $_POST["subtest_name"];?>">
 
                  </div>
 
@@ -214,7 +217,27 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
               <span class="input-group-addon"><i class="fa fa-medkit" aria-hidden="true"></i></span>
 
               <select class="form-control" name="test_id">
-              <option value="0">Click to select a test</option>
+              <option value="0"
+                <?php 
+
+                if(isset($save_subtest)&&$save_subtest=="error") 
+                {
+                  if(isset($_POST['test_id']))
+
+                       {
+                           if($_POST['test_id']=="0") 
+                               echo "selected";
+
+                       }
+                }
+                  
+
+
+                ?>
+                >
+                Click to select a test
+
+                </option>
               <!--get the test list-->
               <?php
              require_once("$root/lib/classes/class.helper.php");
@@ -233,7 +256,32 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              {
              ?>
 
-                 <option value='<?php echo $single_test['id'];?>'><?php echo $single_test['name'];?></option>
+                 <option value='<?php echo $single_test['id'];?>'
+
+                   <?php 
+
+                  if(isset($save_subtest)&&$save_subtest=="error") 
+                  {
+                    if(isset($_POST['test_id']))
+
+                         {
+                             if($_POST['test_id']==$single_test['id']) 
+                                 echo "selected";
+
+                         }
+                  }
+                    
+
+
+                  ?>
+
+
+              >
+              <?php echo $single_test['name'];?>
+                
+              </option>
+
+
               <?php
               }
               }
@@ -244,14 +292,33 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
            </div>
 
            <div class="form-group">
-              <label class="control-label" for="department_id">Please select the related department<span style="color:red">*</span></label>
+              <label class="control-label" for="department_id">Please select the related department</label>
 
 
               <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-hospital-o" aria-hidden="true"></i></span>
               <select class="form-control" name="department_id">
 
-              <option value="0">Click to select a department</option>
+                <option value="0"  <?php 
+
+                if(isset($save_subtest)&&$save_subtest=="error") 
+                {
+                  if(isset($_POST['department_id']))
+
+                       {
+                           if($_POST['department_id']=="0") 
+                               echo "selected";
+
+                       }
+                }
+                  
+
+
+                ?>>
+                Click to select a department
+
+                </option>
+
 
                             <?php
 
@@ -275,7 +342,31 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
 
                               ?>
 
-                            <option value="<?php echo $single_department['id'];?>"><?php echo $single_department['name'];?></option>
+                            <option value="<?php echo $single_department['id'];?>"
+
+                                <?php 
+
+                                  if(isset($save_subtest)&&$save_subtest=="error") 
+                                  {
+                                    if(isset($_POST['department_id']))
+
+                                         {
+                                             if($_POST['department_id']==$single_department['id']) 
+                                                 echo "selected";
+
+                                         }
+                                  }
+                                    
+
+
+                                  ?>
+
+                              >
+
+                              <?php echo $single_department['name'];?>
+                                
+
+                              </option>
 
                               <?php
                              }
@@ -288,20 +379,20 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
            </div>
 
            <div class="form-group">
-             <label class="control-label" for="unit_name">Please enter the unit<span style="color:red">*</span></label> 
+             <label class="control-label" for="unit_name">Please enter the unit</label> 
              <div class="input-group">
                    <span class="input-group-addon"><i class="fa fa-cog" aria-hidden="true"></i></span>
-                   <input type="text" class="form-control" name="unit_name" id="unit_name" aria-describedby="unit_name">
+                   <input type="text" class="form-control" name="unit_name" id="unit_name" aria-describedby="unit_name" value="<?php if(isset($save_subtest)&&$save_subtest=="error") echo $_POST["unit_name"];?>">
 
                </div>
                <p style="color:red;"><?php if(isset($checkSubErr)) echo $checkSubErr[3];?></p>
            </div>
 
              <div class="form-group">
-             <label class="control-label" for="default_value">Please enter the default value<span style="color:red">*</span></label> 
+             <label class="control-label" for="default_value">Please enter the default value</label> 
              <div class="input-group">
                    <span class="input-group-addon"><i class="fa fa-align-justify" aria-hidden="true"></i></span>
-                   <input type="text" class="form-control" name="default_value" id="default_value" aria-describedby="default_value">
+                   <input type="text" class="form-control" name="default_value" id="default_value" aria-describedby="default_value" value="<?php if(isset($save_subtest)&&$save_subtest=="error") echo $_POST["default_value"];?>">
 
                </div>
                <p style="color:red;"><?php if(isset($checkSubErr))  echo $checkSubErr[4];?></p>
@@ -311,7 +402,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              <label class="control-label" for="price">Please enter the standard price<span style="color:red">*</span></label> 
              <div class="input-group">
                    <span class="input-group-addon"><i class="fa fa-inr" aria-hidden="true"></i></span>
-                   <input type="text" class="form-control" name="price" id="price" aria-describedby="price">
+                   <input type="text" class="form-control" name="price" id="price" aria-describedby="price" value="<?php if(isset($save_subtest)&&$save_subtest=="error") echo $_POST["price"];?>">
 
                </div>
 

@@ -1,4 +1,9 @@
 <?php
+
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
+
 if(isset($_GET['d_id']))
 {
   $d_id=$_GET['d_id'];
@@ -12,7 +17,7 @@ else
 
   die("Unauthorized access");
 }
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 
 ?>

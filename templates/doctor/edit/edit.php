@@ -1,5 +1,8 @@
 <?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
 ?>
 <!--get the header-->
 <?php require_once("$root/include/header.php");?>
@@ -80,7 +83,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
                   </td>
                   <td><?php echo $single_doctor['date_created'];?>
                   </td>
-                  <td><a href="http://localhost/chanakya/chanakya/templates/doctor/edit/editDetails.php?d_id=<?php echo $single_doctor['id'];?>" role="button">Edit doctor</a>
+                  <td><a href="http://chanakya.lab/templates/doctor/edit/editDetails.php?d_id=<?php echo $single_doctor['id'];?>" role="button">Edit doctor</a>
                   </td>                  
                   </tr> 
 

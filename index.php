@@ -1,5 +1,12 @@
 <?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+
+$root= realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
+
+require_once("$root/include/session_check.php");
+if($permission!="admin")
+{
+  die("Unauthorized access");
+}
 ?>
 <!--get the header-->
 <?php require_once("$root/include/header.php");?>
@@ -11,14 +18,8 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Page Header
-        <small>Optional description</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-      </ol>
+      
+     
     </section>
 
     <!-- Main content -->
@@ -33,4 +34,4 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
   <!-- /.content-wrapper -->
 
   <!--get the footer-->
-<?php require_once("$root/include/footer.php");?>
+<?php $root= realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';require_once("$root/include/footer.php");?>

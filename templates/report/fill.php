@@ -1,7 +1,17 @@
 <?php
-session_start();
 
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
+
+if($permission=="admin"||$permission=="laboratory")
+{
+
+}
+else
+{
+  die("Unauthorized access");
+}
 
 if(!isset($_GET["id"]))
 {
@@ -121,20 +131,13 @@ $bill_id=$_GET["id"];
               <!-- /.box -->
               <div class="text-center">
               <button type="button" class="btn btn-primary btn-lg" id="report_save" name="report_save">Save</button> 
+
               </div> 
               </form>
         </div>
     </div>
 
 
-
-<button id="test">sss</button>
-
-<button id="test1">sss</button>
-
-
-
-<button id="test2">sss</button>
 
 
     </section>

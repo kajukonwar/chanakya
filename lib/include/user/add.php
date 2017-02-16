@@ -1,4 +1,7 @@
 <?php
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
 
 if($_SERVER["REQUEST_METHOD"]=="POST")
 {
@@ -22,7 +25,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     {
     	
 
-    	$staff_object->save();
+    	$staff_save_status=$staff_object->save();
+    }
+    else
+    {
+      $staff_save_status="error";
     }
   	
   }
@@ -42,7 +49,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     {
     	
 
-    	$doctor_object->save();
+    	$doctor_save_status=$doctor_object->save();
+    }
+    else
+    {
+      $doctor_save_status="error";
     }
   	
   }

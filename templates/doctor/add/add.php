@@ -1,5 +1,8 @@
 <?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
 
 
 ?>
@@ -35,9 +38,9 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
           <p>
           <?php 
 
-          if(isset($doctor_object)&&$doctor_object=="success") echo "Doctor detais were added successfully";
+          if(isset($doctor_save_status)&&$doctor_save_status=="success") echo "Doctor detais were added successfully";
 
-          if(isset($doctor_object)&&$doctor_object=="error") echo "There was error. Doctor details could not be added";
+          if(isset($doctor_save_status)&&$doctor_save_status=="error") echo "There was error. Doctor details could not be added";
 
 
 
@@ -64,7 +67,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
             
                  <div class="input-group">
                    <span class="input-group-addon">@</span>
-                   <input type="text" class="form-control" name="doctor_name" id="doctor_name" aria-describedby="doctor_name" value="<?php if(isset($_POST['doctor_name'])) echo $_POST['doctor_name'];?>">
+                   <input type="text" class="form-control" name="doctor_name" id="doctor_name" aria-describedby="doctor_name" value="<?php if(isset($doctor_save_status)&&$doctor_save_status=="error") echo $_POST['doctor_name'];?>">
 
                  </div>
 
@@ -78,7 +81,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    <span class="input-group-addon">@</span>
-                   <input type="email" class="form-control" name="doctor_email" id="doctor_email" aria-describedby="doctor_email" value="<?php if(isset($_POST['doctor_email'])) echo $_POST['doctor_email'];?>">
+                   <input type="email" class="form-control" name="doctor_email" id="doctor_email" aria-describedby="doctor_email" value="<?php if(isset($doctor_save_status)&&$doctor_save_status=="error") echo $_POST['doctor_email'];?>">
 
                  </div>   
 
@@ -93,7 +96,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    <span class="input-group-addon">@</span>
-                   <input type="text" class="form-control" name="doctor_contact" id="doctor_contact" aria-describedby="doctor_contact" value="<?php if(isset($_POST['doctor_contact'])) echo $_POST['doctor_contact'];?>">
+                   <input type="text" class="form-control" name="doctor_contact" id="doctor_contact" aria-describedby="doctor_contact" value="<?php if(isset($doctor_save_status)&&$doctor_save_status=="error") echo $_POST['doctor_contact'];?>">
 
                  </div>    
 
@@ -109,7 +112,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    <span class="input-group-addon">@</span>
-                   <input type="text" class="form-control" name="doctor_designation" id="doctor_designation" aria-describedby="doctor_designation" value="<?php if(isset($_POST['doctor_designation'])) echo $_POST['doctor_designation'];?>">
+                   <input type="text" class="form-control" name="doctor_designation" id="doctor_designation" aria-describedby="doctor_designation" value="<?php if(isset($doctor_save_status)&&$doctor_save_status=="error") echo $_POST['doctor_designation'];?>">
 				         </div>
 
 
@@ -123,7 +126,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    
-           			<textarea name="doctor_address" cols="140"><?php if(isset($_POST['doctor_address'])) echo $_POST['doctor_address'];?></textarea>
+           			<textarea name="doctor_address" cols="140"><?php if(isset($doctor_save_status)&&$doctor_save_status=="error") echo $_POST['doctor_address'];?></textarea>
            		 </div>
 			
            </div>
@@ -135,7 +138,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    <span class="input-group-addon">@</span>
-                   <input type="text" class="form-control" name="doctor_hospital" id="doctor_hospital" aria-describedby="doctor_hospital" value="<?php if(isset($_POST['doctor_hospital'])) echo $_POST['doctor_hospital'];?>">
+                   <input type="text" class="form-control" name="doctor_hospital" id="doctor_hospital" aria-describedby="doctor_hospital" value="<?php if(isset($doctor_save_status)&&$doctor_save_status=="error") echo $_POST['doctor_hospital'];?>">
 			           </div>
 
 

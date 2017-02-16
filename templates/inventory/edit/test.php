@@ -1,4 +1,9 @@
 <?php
+
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
+
 if(isset($_GET['test_id']))
 {
   $test_id=$_GET['test_id'];
@@ -13,7 +18,7 @@ else
   die("Unauthorized access");
 }
 
-$root=realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+$root=realpath($_SERVER["DOCUMENT_ROOT"]);
 
 ?>
 <!--get the header-->

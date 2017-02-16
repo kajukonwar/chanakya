@@ -1,7 +1,18 @@
 <?php
-session_start();
 
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
+
+if($permission=="admin"||$permission=="laboratory")
+{
+
+}
+else
+{
+  die("Unauthorized access");
+}
+
 
 if(isset($_GET["status"]))
 {
@@ -50,7 +61,59 @@ else
     <!--include helper class-->
 
     <?php require_once("$root/lib/classes/class.helper.php");?>
+
+    <div class="row">
+    <div class="col-sm-12">
     
+    <form  id="report_search_form" class="form-inline">
+
+    <input type="hidden" name="report_search_status" value="<?php echo $report_search_status;?>">
+
+    <div class="form-group">
+        <label>Patient name</label> 
+        <input type="text" class="search form-control" id="report_search_name" name="report_search_name"  placeholder="By Patient Name">
+       
+    </div>
+    <div class="form-group" style="margin-left:20px;">
+        <label>Report number</label>
+        <input type="text" class="search form-control" id="report_search_id" name="report_search_id"  placeholder="By Bill number">
+       
+    </div>
+    <div class="form-group" style="margin-left:20px;">
+              <div class="form-group">
+                <label>Date range:</label>
+
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" name="report_search_date" id="report_search_date">
+                </div>
+               
+              </div>
+    </div>
+
+
+
+    <div class="form-group" style="margin-left:400px;margin-top:30px;">
+            <label class="control-label"></label>
+           <div class="input-group">
+            <button type="button" name="report_search_button" id="report_search_button" class="btn btn-primary btn-lg">Search</button>
+            </div>
+
+    </div>
+
+    </form>
+   
+  </div>
+  <div class="col-sm12">
+  <h4 id="report_search_error" class="text-center" style="color:red;display:none;">All search options can't be empty</h4>
+  </div>
+  </div>
+
+ <hr>
+
+
     <div class="row">
         <div class="col-sm-12">
             <!-- Table -->
@@ -59,7 +122,7 @@ else
        
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
-                  <table class="table table-striped" id="bill_content_table">
+                  <table class="table table-striped" id="report_content_table">
 
                     <tr>
                       
@@ -79,9 +142,9 @@ else
                         ?>
                           
 
-                          <tr>
-                          <td>No  Reports found</td>
-                          </tr>
+                        <tr>
+                            <td>No  Reports found</td>
+                        </tr>
 
                         <?php
                        }
@@ -102,7 +165,7 @@ else
                                     {
                                       ?>
 
-                                        <td><a href="http://localhost/chanakya/chanakya/templates/report/fill.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Fill Report</a>
+                                        <td><a href="http://chanakya.lab/templates/report/fill.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Fill Report</a>
                                         </td>
 
                                       <?php
@@ -114,13 +177,13 @@ else
 
                                       ?>
 
-                                        <td><a href="http://localhost/chanakya/chanakya/templates/report/update.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Update Report</a>
+                                        <td><a href="http://chanakya.lab/templates/report/update.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Update Report</a>
                                         </td>
 
-                                        <td><a href="http://localhost/chanakya/chanakya/templates/report/viewDetails.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">View Details</a>
+                                        <td><a href="http://chanakya.lab/templates/report/viewDetails.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">View Details</a>
                                         </td>
 
-                                        <td><a href="http://localhost/chanakya/chanakya/templates/pdf1.php?r_id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Print report</a>
+                                        <td><a href="http://chanakya.lab/lib/pdf/report.php?r_id=<?php echo $single_report['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print report</a>
                                         </td>
 
                                       <?php

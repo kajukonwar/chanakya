@@ -1,6 +1,8 @@
 <?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
 
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
 
 ?>
 <!--get the header-->
@@ -35,14 +37,15 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
           <p>
           <?php 
 
-          if(isset($staff_object)&&$staff_object=="success") echo "Staff was added successfully";
+          if(isset($staff_save_status)&&$staff_save_status=="success") echo "Staff was added successfully";
 
-          if(isset($staff_object)&&$staff_object=="error") echo "There was error. Staff could not be added";
+          if(isset($staff_save_status)&&$staff_save_status=="error") echo "There was error. Staff could not be added";
 
 
 
 
           ?>
+
           </p>   
 
      </div>
@@ -65,7 +68,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
             
                  <div class="input-group">
                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                   <input type="text" class="form-control" name="user_name" id="user_name" aria-describedby="user_name" value="<?php if(isset($_POST['user_name'])) echo $_POST['user_name'];?>">
+                   <input type="text" class="form-control" name="user_name" id="user_name" aria-describedby="user_name" value="<?php if(isset($staff_save_status)&&$staff_save_status=="error") echo $_POST['user_name'];?>">
 
                  </div>
 
@@ -80,7 +83,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                   <input type="email" class="form-control" name="user_email" id="user_email" aria-describedby="user_email" value="<?php if(isset($_POST['user_email'])) echo $_POST['user_email'];?>">
+                   <input type="email" class="form-control" name="user_email" id="user_email" aria-describedby="user_email" value="<?php if(isset($staff_save_status)&&$staff_save_status=="error") echo $_POST['user_email'];?>">
 
                  </div>    
               
@@ -94,7 +97,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    <span class="input-group-addon">@</span>
-                   <input type="text" class="form-control" name="user_contact" id="user_contact" aria-describedby="user_contact" value="<?php if(isset($_POST['user_contact'])) echo $_POST['user_contact'];?>">
+                   <input type="text" class="form-control" name="user_contact" id="user_contact" aria-describedby="user_contact" value="<?php if(isset($staff_save_status)&&$staff_save_status=="error") echo $_POST['user_contact'];?>">
 
                  </div>    
               
@@ -111,11 +114,31 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
                    <span class="input-group-addon">@</span>
              
 					<label class="radio-inline">
-  							<input type="radio" name="user_gender"  value="male" <?php if(isset($_POST['user_gender'])){if($_POST['user_gender']=="male") echo "checked";} ?>> Male
-					</label>
+  							<input type="radio" name="user_gender"  value="male" <?php if(isset($staff_save_status)&&$staff_save_status=="error")
+                    {
+
+                      if(isset($_POST['user_gender']))
+                      {
+                        if($_POST['user_gender']=="male") 
+                        echo "checked";
+                      }
+                    } ?>> 
+                    Male
+                    					
+            </label>
 					<label class="radio-inline">
-  						<input type="radio" name="user_gender"  value="female" <?php if(isset($_POST['user_gender'])){if($_POST['user_gender']=="female") echo "checked";} ?>> female
-					</label>
+  						<input type="radio" name="user_gender"  value="female" <?php if(isset($staff_save_status)&&$staff_save_status=="error")
+                {
+
+                  if(isset($_POST['user_gender']))
+                  {
+                  if($_POST['user_gender']=="female") 
+                  echo "checked";
+                  }
+                } ?>> 
+                female
+                					
+          </label>
 				 </div>
 			   
             <p style="color:red;"><?php if(isset($staffErr['gender'])) echo $staffErr['gender'];?></p>
@@ -128,10 +151,10 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    
-           			<textarea name="user_address" cols="140"><?php if(isset($_POST['user_address'])) echo $_POST['user_address'];?></textarea>
+           			<textarea name="user_address" cols="140"><?php if(isset($staff_save_status)&&$staff_save_status=="error") echo $_POST['user_address'];?></textarea>
            		 </div>
 			       
-           <p style="color:red;"><?php if(isset($staffErr['address'])) echo $staffErr['address'];?></p>
+           <p style="color:red;"></p>
            </div>
 
 
@@ -143,9 +166,58 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
                    <span class="input-group-addon">@</span>
                     <select class="form-control" name="user_role">
   				      
-                <option value="0" <?php if(isset($_POST['user_role'])){if($_POST['user_role']=="0") echo "selected";} ?>>Click to select the user role</option>
-  				      <option value="staff" <?php if(isset($_POST['user_role'])){if($_POST['user_role']=="staff") echo "selected";} ?>>staff</option>
-                <option value="admin" <?php if(isset($_POST['user_role'])){if($_POST['user_role']=="admin") echo "selected";} ?>>admin</option>
+                <option value="0" <?php if(isset($staff_save_status)&&$staff_save_status=="error")
+                  {
+
+                    if(isset($_POST['user_role']))
+
+                    {
+                      if($_POST['user_role']=="0") 
+                      echo "selected";
+
+                    }
+                  } ?>>
+                  Click to select the user role
+                  </option>
+
+  				      <option value="reception" <?php if(isset($staff_save_status)&&$staff_save_status=="error")
+                    {
+
+                      if(isset($_POST['user_role']))
+
+                      {
+                        if($_POST['user_role']=="reception") 
+                        echo "selected";
+                      }
+                    } ?>>
+                    Reception
+                    </option>
+
+                 <option value="laboratory" <?php if(isset($staff_save_status)&&$staff_save_status=="error")
+                    {
+
+                      if(isset($_POST['user_role']))
+
+                      {
+
+                        if($_POST['user_role']=="laboratory") 
+                        echo "selected";
+
+                      }
+                    } ?>>
+                    Laboratory
+                    </option>
+                <option value="admin" <?php if(isset($staff_save_status)&&$staff_save_status=="error")
+                  {
+
+                    if(isset($_POST['user_role']))
+                    {
+                    if($_POST['user_role']=="admin") 
+                    echo "selected";
+                    }
+                  } ?>>
+                  Admin
+                  </option>
   				
 			        </select>
 			     </div>
@@ -161,7 +233,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-            		<input type="text" name="user_login" class="form-control" aria-describedby="user_login" value="<?php if(isset($_POST['user_login'])) echo $_POST['user_login'];?>">
+            		<input type="text" name="user_login" class="form-control" aria-describedby="user_login" value="<?php if(isset($staff_save_status)&&$staff_save_status=="error") echo $_POST['user_login'];?>">
             	 </div>
 			       
             <p style="color:red;"><?php if(isset($staffErr['login'])) echo $staffErr['login'];?></p>
@@ -173,7 +245,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
              
                  <div class="input-group">
                    <span class="input-group-addon">@</span>
-            		<input type="password" name="user_password" class="form-control" value="<?php if(isset($_POST['user_password'])) echo $_POST['user_password'];?>">
+            		<input type="password" name="user_password" class="form-control" value="<?php if(isset($staff_save_status)&&$staff_save_status=="error") echo $_POST['user_password'];?>">
             	 </div>
 			         
             <p style="color:red;"><?php if(isset($staffErr['password'])) echo $staffErr['password'];?></p>
