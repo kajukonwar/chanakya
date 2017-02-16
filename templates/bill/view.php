@@ -1,7 +1,15 @@
 <?php
-session_start();
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
 
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+require_once("$root/include/session_check.php");
+if($permission=="admin"||$permission=="reception")
+{
+
+}
+else
+{
+  die("Unauthorized access");
+}
 
 if(isset($_GET["status"]))
 {
@@ -50,21 +58,25 @@ else
 
     <?php require_once("$root/lib/classes/class.helper.php");?>
     
+    
     <div class="row">
     <div class="col-sm-12">
-    <h2>Search report by option</h2>
-    <div class="form-group pull-left">
-        <label>Search by patient name</label> 
-        <input type="text" class="search form-control" id="searchInput" placeholder="By Patient Name">
+    
+    <form  id="bill_search_form" class="form-inline">
+
+    <input type="hidden" name="bill_search_status" value="<?php echo $bill_search_status;?>">
+
+    <div class="form-group">
+        <label>Patient name</label> 
+        <input type="text" class="search form-control" id="bill_search_name" name="bill_search_name"  placeholder="By Patient Name">
        
     </div>
-    <div class="form-group pull-left">
-        <label>Search by Bill number</label>
-        <input type="text" class="search form-control" id="searchInput" placeholder="By Bill number">
+    <div class="form-group" style="margin-left:20px;">
+        <label>Bill number</label>
+        <input type="text" class="search form-control" id="bill_search_id" name="bill_search_id"  placeholder="By Bill number">
        
     </div>
-    <div class="form-group pull-left">
-       <!-- Date range -->
+    <div class="form-group" style="margin-left:20px;">
               <div class="form-group">
                 <label>Date range:</label>
 
@@ -72,15 +84,29 @@ else
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" class="form-control pull-right" id="bill_date_select">
+                  <input type="text" class="form-control pull-right" name="bill_search_date" id="bill_search_date">
                 </div>
-                <!-- /.input group -->
+               
               </div>
     </div>
+
+
+    <div class="form-group" style="margin-left:400px;margin-top:30px;">
+            <label class="control-label"></label>
+           <div class="input-group">
+            <button type="button" name="bill_search_button" id="bill_search_button" class="btn btn-primary btn-lg">Search</button>
+            </div>
+
+    </div>
+    </form>
    
+  </div>
+  <div class="col-sm12">
+  <h4 id="bill_search_error" class="text-center" style="color:red;display:none;">All search options can't be empty</h4>
   </div>
   </div>
 
+ <hr>
   
     <div class="row">
         <div class="col-sm-12">
@@ -132,10 +158,16 @@ else
                                   <td>
                                   <?php echo $single_available_bill['status'];?>
                                   </td>
-                                  <td><a href="http://localhost/chanakya/chanakya/templates/bill/viewdetails.php?id=<?php echo $single_available_bill['id'];?>" class="btn btn-primary" role="button">View Details</a>
+                                  <td><a href="http://chanakya.lab/templates/bill/viewdetails.php?id=<?php echo $single_available_bill['id'];?>" class="btn btn-primary" role="button">View Details</a>
                                   </td>
 
-                                  <td><a href="http://localhost/chanakya/chanakya/templates/pdf.php?b_id=<?php echo $single_available_bill['id'];?>" class="btn btn-primary" role="button">Print</a>
+                                  <td><?php
+                                      
+                                          ?>
+                                          <a href="http://chanakya.lab/lib/pdf/bill.php?b_id=<?php echo $single_available_bill['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print</a>
+                                        <?php
+                                      
+                                      ?>
                                   </td>
                                   </tr>
 

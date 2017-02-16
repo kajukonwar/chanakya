@@ -1,6 +1,10 @@
-
 <?php
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
 require_once("$root/include/dbconfig.php");
+
+date_default_timezone_set('Asia/Kolkata');
 abstract class Inventory{
 
 abstract protected function validate();
@@ -464,8 +468,8 @@ class Subtest extends Inventory{
       //for department ID
         if(empty($this->department_id)||$this->department_id==0)
       {
-        $status[0]="error";
-        $status[6]="Error: Please select the related departname name";
+        //$status[0]="error";
+        $status[6]="";
         
       }
      
@@ -477,8 +481,8 @@ class Subtest extends Inventory{
      
         if(empty($this->unit))
       {
-        $status[0]="error";
-        $status[3]="Error: Please enter the unit name";
+        //$status[0]="error";
+        $status[3]="";
         
       }
       else
@@ -487,12 +491,14 @@ class Subtest extends Inventory{
         $status[3]="";
       }
 
+
+
         //for default value
      
         if(empty($this->default_value))
       {
-        $status[0]="error";
-        $status[4]="Error: Please enter the default value";
+        //$status[0]="error";
+        $status[4]="";
         
       }
       else

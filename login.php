@@ -1,6 +1,6 @@
 <?php
-
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+session_start();
+$root = realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
 require_once("$root/include/dbconfig.php");
 
 ?>
@@ -9,19 +9,24 @@ require_once("$root/include/dbconfig.php");
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Log in</title>
+  <title>Chanakya Diagnostic| Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="/chanakya/chanakya/bootstrap/css/bootstrap.min.css">
+
+
+  <link rel="shortcut icon" href="dist/img/favicon (2).ico" type="image/x-icon">
+  <link rel="icon" href="dist/img/favicon (2).ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="/chanakya/chanakya/plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="/chanakya/chanakya/plugins/ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="plugins/ionicons/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="/chanakya/chanakya/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="/chanakya/chanakya/plugins/iCheck/square/blue.css">
+  <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -104,7 +109,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
 
             // prepare and bind
             
-            $stmt = $conn->prepare("SELECT password FROM staff WHERE user_name=?");
+            $stmt = $conn->prepare("SELECT * FROM staff WHERE user_name=?");
             $stmt->bindParam(1,$user_name);
             
             $stmt->execute();
@@ -127,10 +132,32 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
               else
               {
 
+                  if($result[0]['role']=="admin")
+                  {
+                    $_SESSION['login_status']="logedin";
+                    $_SESSION['user_id']=$result[0]['id'];
+                    $_SESSION['user_role']=$result[0]['role'];
+
+                      header("Location:index.php");
+                  }
+                  if($result[0]['role']=="reception")
+                  {
+                    $_SESSION['login_status']="logedin";
+                    $_SESSION['user_id']=$result[0]['id'];
+                    $_SESSION['user_role']=$result[0]['role'];
+                      header("Location:templates/bill/add.php");
+                  }
+
+                   if($result[0]['role']=="laboratory")
+                  {               
+                      $_SESSION['login_status']="logedin";
+                      $_SESSION['user_id']=$result[0]['id'];
+                      $_SESSION['user_role']=$result[0]['role'];     
+                      header("Location:templates/report/report.php");
+                  }
 
                
 
-                header("Location:index.php");
               }
             }
             
@@ -157,18 +184,18 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
 
 
 ?>
-  <p><?php echo $login_status;?></p>
+  <p style="color:red;"><?php echo $login_status;?></p>
 
     <form name="user_login_form" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" name="user_name" placeholder="User name" value="<?php echo $user_name;?>">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
-        <p><?php echo $user_nameErr;?></p>
+        <p style="color:red;"><?php echo $user_nameErr;?></p>
       </div>
       <div class="form-group has-feedback">
         <input type="password" class="form-control" name="user_password" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-         <p><?php echo $user_passwordErr;?></p>
+         <p style="color:red;"><?php echo $user_passwordErr;?></p>
       </div>
       <div class="row">
         
@@ -186,11 +213,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
 <!-- /.login-box -->
 
 <!-- jQuery 2.2.3 -->
-<script src="/chanakya/chanakya/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="/chanakya/chanakya/bootstrap/js/bootstrap.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="/chanakya/chanakya/plugins/iCheck/icheck.min.js"></script>
+<script src="plugins/iCheck/icheck.min.js"></script>
 <script>
   $(function () {
     $('input').iCheck({

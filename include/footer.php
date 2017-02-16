@@ -90,44 +90,35 @@
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.3 -->
-<script src="/chanakya/chanakya/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="/chanakya/plugins/jQuery/jquery-2.2.3.min.js"></script>
 
 <!-- Bootstrap 3.3.6 -->
-<script src="/chanakya/chanakya/bootstrap/js/bootstrap.min.js"></script>
+<script src="/chanakya/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/chanakya/chanakya/dist/js/app.min.js"></script>
+<script src="/chanakya/dist/js/app.min.js"></script>
 
 
-<script src="/chanakya/chanakya/plugins/daterangepicker/moment.js"></script>
+<script src="/chanakya/plugins/daterangepicker/moment.js"></script>
 
-<script src="/chanakya/chanakya/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="/chanakya/plugins/daterangepicker/daterangepicker.js"></script>
 
-<script src="/chanakya/chanakya/plugins/vex-master/dist/js/vex.combined.js"></script>
+<script src="/chanakya/plugins/vex-master/dist/js/vex.combined.js"></script>
 <script>vex.defaultOptions.className='vex-theme-os'</script>
+
+<!--CK editor-->
+<!-- CK Editor -->
+<script src="/chanakya/plugins/ckeditor/ckeditor.js"></script>
+<script>
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+      CKEDITOR.replace( 'special_bill_editor' );
+</script>
 
 <script>
 $("#test").click(function()
 
 {
-  vex.dialog.buttons.YES.text="Yes",
-  vex.dialog.buttons.NO.text="No",
-  vex.dialog.confirm({
-  message:'The report has been saved successfully. Would you like to print the report now?',
-  callback: function(value)
-  {
-    if(value)
-    {
-      console.log("success");
-      window.open("http://localhost/chanakya/chanakya/templates/pdf1.php?r_id=10","_blank");
-      window.location.href="http://localhost/chanakya/chanakya/templates/report/view.php?status=pending";
-
-    }
-    else
-    {
-      console.log("error");
-    }
-  }
-})
+  
 
 });
 
@@ -153,11 +144,7 @@ vex.dialog.alert('Error: An unexpected error occured')
 
 </script>
 
-<script>
 
-    $("#bill_date_select").daterangepicker();
-  
-</script>
 
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
@@ -165,13 +152,14 @@ vex.dialog.alert('Error: An unexpected error occured')
      user experience. Slimscroll is required when using the
      fixed layout. -->
      
-<script src="/chanakya/chanakya/dist/js/custom.js"></script>
+<script src="/chanakya/dist/js/custom.js"></script>
 
 <script>
 
  $("#bill_test_name").on('change', function() {
 
-    var data=$("#bill_test_name option:selected" ).val();
+    //get the bill id 
+    var data=$("#bill_test_name option:selected").val();
 
     
     if(data==0)
@@ -191,7 +179,7 @@ vex.dialog.alert('Error: An unexpected error occured')
 
    $.ajax({
     type: "POST",
-    url: "http://localhost/chanakya/chanakya/lib/ajax.php",
+    url: "http://chanakya.lab/lib/ajax.php",
     data: { 'test_data': data },
    
     success: function(result){
@@ -199,7 +187,7 @@ vex.dialog.alert('Error: An unexpected error occured')
        
        $('#bill_subtest_name').html('');
        $('#bill_subtest_name').append('<option value="0">Please choose a subtest</option>');
-       //$('#bill_subtest_name').append('<option value="NA">NA</option>');
+       
        $.each(result, function( key, value ) {
         
         $('#bill_subtest_name').append('<option value='+value.id+'>'+value.name+'</option>');
@@ -236,7 +224,7 @@ $("#bill_subtest_name").on('change', function() {
     {
        $.ajax({
         type: "POST",
-        url: "http://localhost/chanakya/chanakya/lib/ajax.php",
+        url: "http://chanakya.lab/lib/ajax.php",
         data: { 'subtest_data': data },
        
         success: function(result){
@@ -285,6 +273,7 @@ $("#add_bill_item").on('click', function() {
     {
 
       $("#bill_test_name_err").html("Please choose a test to add");
+
     }
     else
     {
@@ -301,51 +290,64 @@ $("#add_bill_item").on('click', function() {
 
           if(!$.trim(cost)||$.trim(cost)==0)
         {
-          $("#bill_cost_err").html("There should be a valid cost for tests");
+          $("#bill_cost_err").html("There should be a valid cost for tests and subtests");
         }
         else
         {
               $("#bill_cost_err").html("");
 
+               $('#add_bill_item').prop("disabled", true); // Element(s) are now enabled.
 
               var data_index = parseInt(index) + 1;
-              var new_count = parseInt(count) + 1;
-
-               $.ajax({
-              type: "POST",
-              url: "http://localhost/chanakya/chanakya/lib/ajax.php",
-              data: {get_department_id:subtest_id},
-             
-              success: function(result){
-
-                var result=JSON.parse(result);
-                 
-                $('#bill_content_table').append('<tr class="bill_content_row"><td>'+new_count+'</td><td>'+test_name+'</td><td>'+subtest_name+'</td><td>'+result+'</td><td>'+cost+'</td><td><button type="button" class="remove_bill_row" value="'+data_index+'">Remove</button></td></tr>');
-
-              $('#bill_item_index').val(data_index);
-              $('#bill_item_count').val(new_count);
-
-                 
-
-              }
-             });
+             // var new_count = parseInt(count) + 1;
 
 
-              
               var bill_data={ 'index':data_index,'bill_test_id': test_id,'bill_subtest_id':subtest_id,'bill_unit_cost':cost };
 
               $.ajax({
               type: "POST",
-              url: "http://localhost/chanakya/chanakya/lib/ajax.php",
+              url: "http://chanakya.lab/lib/ajax.php",
               data: {bill_content_data:bill_data},
              
               success: function(result){
                  
-                
+                      
+                        var current_bill_count=JSON.parse(result);
+
+                        
+
+                        $.ajax({
+                        type: "POST",
+                        url: "http://chanakya.lab/lib/ajax.php",
+                        data: {get_department_id:subtest_id},
+                       
+                        success: function(result){
+
+                          var result=JSON.parse(result);
+                           
+                          $('#bill_content_table').append('<tr class="bill_content_row"><td>'+test_name+'</td><td>'+subtest_name+'</td><td>'+result+'</td><td>'+cost+'</td><td><button type="button" class="remove_bill_row btn-danger" value="'+data_index+'">Remove</button></td></tr>');
+
+                        $('#bill_item_index').val(data_index);
+                        //$('#bill_item_count').val(new_count);
+
+                           $('#add_bill_item').prop("disabled", false); // Element(s) are now enabled.
+
+
+                        }
+                       });
+
+                       
                  
 
               }
              });
+
+
+
+
+
+              
+              
         }
       }
     }
@@ -362,20 +364,19 @@ $(document).on('click', '.remove_bill_row', function(){
     
      $.ajax({
     type: "POST",
-    url: "http://localhost/chanakya/chanakya/lib/ajax.php",
+    url: "http://chanakya.lab/lib/ajax.php",
     data: {remove_data:index},
    
     success: function(result){
-       
-      var count= $('#bill_item_count').val();
-      var new_count = parseInt(count) - 1;
-      $('#bill_item_count').val(new_count);
+        trow.remove();
+
+        //var new_content_count=JSON.parse(result);
        
 
     }
    });
 
-    trow.remove();
+   
 
   
 
@@ -384,7 +385,7 @@ $(document).on('click', '.remove_bill_row', function(){
 
 
 
-
+// show/hide doctor name select dropdown
 $('input[type=radio][name=doctor_refer]').change(function() {
 
    if(this.value=="yes")
@@ -398,10 +399,27 @@ $('input[type=radio][name=doctor_refer]').change(function() {
 
 });
 
+// show/hide doctor name select dropdown for special/different format bill
+$('input[type=radio][name=doctor_refer]').change(function() {
+
+   if(this.value=="yes")
+   {
+    $("#special_bill_doctor_name").show();
+   }
+   else
+   {
+    $("#special_bill_doctor_name").hide();
+   }
+
+});
+
 
 $('#save_bill').on('click',function() {
 
 
+//$('#save_bill').prop("disabled", true); // Element(s) are now enabled.
+
+document.getElementById("save_bill").disabled = true;
 
 var doctor_data=$("#add_bill_doctor").serialize();
 
@@ -413,7 +431,7 @@ var data=doctor_data+"&"+patient_data;
 
 $.ajax({
     type: "POST",
-    url: "http://localhost/chanakya/chanakya/lib/ajax.php",
+    url: "http://chanakya.lab/lib/ajax.php",
     data: {save_bill_data:data},
    
     success: function(result){
@@ -458,7 +476,7 @@ $.ajax({
       {
 
         case 1:
-          $("#patient_age_err").html("Please enter the patient's age");
+          $("#patient_age_err").html("Please enter the age");
           break;
 
         case 2:
@@ -609,12 +627,17 @@ $.ajax({
       
             $('#bill_subtest_name').prop("disabled", true); // Element(s) are now enabled.     
 
-            var print_bill_url="http://localhost/chanakya/chanakya/templates/pdf.php?b_id="+status.current_bill_id;
+            var print_bill_url="http://chanakya.lab/lib/pdf/bill.php?b_id="+status.current_bill_id;
             window.open(print_bill_url,'_blank');
           }
         }
       
-       
+      
+      //$('#save_bill').prop("disabled", false); // Element(s) are now enabled.
+
+
+      document.getElementById("save_bill").disabled = false;
+
     }
     
    });
@@ -624,34 +647,53 @@ $.ajax({
 
 });
 
-//fill pending report
+//fill and save pending report
 $('#report_save').on('click',function() {
 
     var data=$("#report_edit_form").serialize();
 
     $.ajax({
     type: "POST",
-    url: "http://localhost/chanakya/chanakya/lib/ajax.php",
+    url: "http://chanakya.lab/lib/ajax.php",
     data: {save_report_data:data},
    
     success: function(result){
        
-        if(result=="success")
-        {
+         var result=JSON.parse(result);
+        console.log(result[0]);
+        console.log(result[1]);
 
-          
-        }
-        else if(result=="error")
+
+        switch(result[0])
         {
+          case "success":
+
+          var query="http://chanakya.lab/templates/report/status.php?status=success&r_id="+result[1];
+          window.location.href=query;
+          break;
+
+          case "partial":
+
+          var query="http://chanakya.lab/templates/report/status.php?status=partial&r_id="+result[1];
+          window.location.href=query;
+          break;
+
+          case "error":
+
+          var query="http://chanakya.lab/templates/report/status.php?status=error1&r_id="+result[1];
+          window.location.href=query;
+          break;
+
+          default:
+
+          var query="http://chanakya.lab/templates/report/status.php?status=error2&r_id=0";
+          window.location.href=query;
 
         }
-        else
-        {
 
-        }
       
-       window.location.href="http://localhost/chanakya/chanakya/templates/report/view.php?status=pending";
-
+       
+      
     }
    });
 
@@ -659,20 +701,115 @@ $('#report_save').on('click',function() {
 
 
 
+//print saved report
+
+$('#report_print').on('click',function() {
+
+    var r_id=$("#report_id").val();
+    var query="http://chanakya.lab/lib/pdf/report.php?r_id="+r_id;
+    window.open(query,'_blank');
+   
+
+});
 
 
+//send report email
+
+$('#report_send_email').on('click',function() {
+
+    var data=$("#report_save_status_form").serialize();
+
+    $.ajax({
+    type: "POST",
+    url: "http://chanakya.lab/lib/classes/class.send_mail.php",
+    data: {send_report_email:data},
+   
+    success: function(result){
+       
+         var result=JSON.parse(result);
+
+         if(result=="success")
+         {
+            vex.dialog.alert('Email has been sent successfully')
+         }
+         else
+         {
+            
+            vex.dialog.alert('Error: Email could not be sent')
+         }
+       
+       
+      
+    }
+   });
+
+});
+
+//send email to doctor
+
+$('#report_send_email_doctor').on('click',function() {
+
+    var data=$("#report_save_status_form").serialize();
+
+    $.ajax({
+    type: "POST",
+    url: "http://chanakya.lab/lib/classes/class.send_mail.php",
+    data: {send_report_email_doctor:data},
+   
+    success: function(result){
+       
+         var result=JSON.parse(result);
+
+         if(result=="success")
+         {
+            vex.dialog.alert('Email has been sent successfully')
+         }
+         else
+         {
+            
+            vex.dialog.alert('Error: Email could not be sent')
+         }
+       
+       
+      
+    }
+   });
+
+});
+
+//send SMS
+
+$('#report_send_sms').on('click',function() {
+
+    var data=$("#report_save_status_form").serialize();
+
+    $.ajax({
+    type: "POST",
+    url: "http://chanakya.lab/lib/classes/class.send_sms.php",
+    data: {send_report_sms:data},
+   
+    success: function(result){
+       
+         //var result=JSON.parse(result);
+
+         
+            vex.dialog.alert(result)
+        
+ 
+      
+    }
+   });
+
+});
 
 
+//go back to view reports after saving
 
+$('#report_go_back').on('click',function() {
 
+   window.location.href="http://chanakya.lab/templates/report/report.php"; 
 
-
-          
-
-
-
-    
-
+});
 
 //update completed report
 $('#report_update').on('click',function() {
@@ -681,13 +818,46 @@ $('#report_update').on('click',function() {
 
     $.ajax({
     type: "POST",
-    url: "http://localhost/chanakya/chanakya/lib/ajax.php",
+    url: "http://chanakya.lab/lib/ajax.php",
     data: {update_report_data:data},
    
     success: function(result){
        
-      
-       //window.location.href="http://localhost/chanakya/chanakya/templates/report/update.php?id=20";
+       var result=JSON.parse(result);
+       if(result[0]=="success")
+       {
+
+        
+        vex.dialog.buttons.YES.text="View the details"
+        vex.dialog.buttons.NO.text="View other reports"
+        vex.dialog.confirm({
+
+            message: 'The report has been updated successsfully.',
+            callback: function(value)
+            {
+
+              if(value)
+              {
+                var query="http://chanakya.lab/templates/report/viewDetails.php?id="+result[1];
+                window.location.href=query;
+              }
+              else
+              {
+                var query="http://chanakya.lab/templates/report/view.php?status=all";
+                window.location.href=query;
+              }
+            }
+
+
+
+        })
+
+        
+       }
+       else
+       {
+        
+       }
 
     }
    });
@@ -716,5 +886,171 @@ $('input[type=radio][name=test_has_subtest]').change(function() {
 
 });
 */
+
+//bill search
+$("#bill_search_button").on('click',function(){
+
+var data=$("#bill_search_form").serialize();
+
+$.ajax({
+    type: "POST",
+    url: "http://chanakya.lab/lib/ajax.php",
+    data: {bill_search:data},
+  
+    success: function(result){
+  
+      var result=JSON.parse(result);
+      console.log(result);
+
+      if(result=="error")
+      {
+        $("#bill_search_error").show();
+      }
+      else if(result=="empty")
+      {
+        $("#bill_search_error").hide();
+        $('#bill_content_table').html("");
+        $('#bill_content_table').append('<tr><th>ID</th><th>Patient name</th><th>Date</th><th>Status</th><th></th><th></th></tr>');
+
+        $('#bill_content_table').append('<tr><td>No results found</td></tr>');
+      }
+      else
+      {
+
+          $("#bill_search_error").hide();
+          $('#bill_content_table').html("");
+          $('#bill_content_table').append('<tr><th>ID</th><th>Patient name</th><th>Date</th><th>Status</th><th></th><th></th></tr>');
+
+           $.each(result, function( key, value ) {
+        
+               $('#bill_content_table').append('<tr><td>'+value.id+'</td><td>'+value.patient_name+'</td><td>'+value.created_on+'</td><td>'+value.status+'</td><td><a href="http://chanakya.lab/templates/bill/viewdetails.php?id='+value.id+'" class="btn btn-primary" role="button">View Details</a></td><td><a href="http://chanakya.lab/lib/pdf/bill.php?b_id='+value.id+'" target="_blank" class="btn btn-primary" role="button">Print</a></td></tr>');
+          })
+      }
+     
+
+    }
+   });
+
+
+
+})
    
+
+
+    $("#bill_search_date").daterangepicker({
+
+      locale:{
+
+        format:'YYYY/MM/DD'
+      }
+   
+    });
+  
+//report search
+$("#report_search_button").on('click',function(){
+
+var data=$("#report_search_form").serialize();
+
+$.ajax({
+    type: "POST",
+    url: "http://chanakya.lab/lib/ajax.php",
+    data: {report_search:data},
+  
+    success: function(result){
+  
+      var result=JSON.parse(result);
+      console.log(result);
+
+      if(result=="error")
+      {
+        $("#report_search_error").show();
+      }
+      else if(result=="empty")
+      {
+        $("#report_search_error").hide();
+        $('#report_content_table').html("");
+        $('#report_content_table').append('<tr><th>ID</th><th>Patient name</th><th>Date</th><th>Status</th><th></th><th></th></tr>');
+
+        $('#report_content_table').append('<tr><td>No results found</td></tr>');
+      }
+      else
+      {
+
+          $("#report_search_error").hide();
+          $('#report_content_table').html("");
+          $('#report_content_table').append('<tr><th>ID</th><th>Patient name</th><th>Date</th><th>Status</th><th></th><th></th><th></th></tr>');
+
+           $.each(result, function( key, value ) {
+        
+
+               if(value.status=="pending")
+               {
+
+               //$('#report_content_table').append('<tr><td>'+value.id+'</td><td>'+value.patient_name+'</td><td>'+value.created_on+'</td><td>'+value.status+'</td>');
+
+               $('#report_content_table').append('<tr><td>'+value.id+'</td><td>'+value.patient_name+'</td><td>'+value.created_on+'</td><td>'+value.status+'</td><td><a href="http://chanakya.lab/templates/report/fill.php?id='+value.id+'" class="btn btn-primary" role="button">Fill Report</a></td></tr>');
+               }
+               else if(value.status=="complete")
+               {
+
+
+               //$('#report_content_table').append('<tr><td>'+value.id+'</td><td>'+value.patient_name+'</td><td>'+value.created_on+'</td><td>'+value.status+'</td>');
+               $('#report_content_table').append('<tr><td>'+value.id+'</td><td>'+value.patient_name+'</td><td>'+value.created_on+'</td><td>'+value.status+'</td><td><a href="http://chanakya.lab/templates/report/update.php?id='+value.id+'" class="btn btn-primary" role="button">Update Report</a></td><td><a href="http://chanakya.lab/templates/report/viewDetails.php?id='+value.id+'" class="btn btn-primary" role="button">View Details</a></td><td><a href="http://chanakya.lab/lib/pdf/report.php?r_id='+value.id+'"  target="_blank" class="btn btn-primary" role="button">Print report</a></td></tr>');
+
+               }
+               else
+               {
+
+                $('#report_content_table').append('<td>Error! Something went wrong.</a></td></tr>');
+
+
+               }
+
+              
+          })
+      }
+     
+
+    }
+   });
+
+
+
+})
+   
+
+
+    $("#report_search_date").daterangepicker({
+
+      locale:{
+
+        format:'YYYY/MM/DD'
+      }
+   
+    });
+
+
+    //send SMS to the owner at the end of day
+
+    $('#send_sms_owner').on('click',function() {
+
+    var data="send_sms_owner";// it has no meaning, just to fill in the data field of ajax call
+    $.ajax({
+    type: "POST",
+    url: "http://chanakya.lab/lib/classes/class.send_sms.php",
+    data: {send_sms_owner:data},
+   
+    success: function(result){
+       
+         //var result=JSON.parse(result);
+
+         
+            vex.dialog.alert(result)
+        
+ 
+      
+    }
+   });
+
+});
 </script>

@@ -1,8 +1,17 @@
 <?php
-session_start();
 
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+$root= realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
 
+require_once("$root/include/session_check.php");
+
+if($permission=="admin"||$permission=="reception")
+{
+
+}
+else
+{
+  die("Unauthorized access");
+}
 
 ?>
 <!--get the header-->
@@ -39,14 +48,14 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
     
     <div class="row">
         <div class="col-sm-4 text-center">
-          <a href="http://localhost/chanakya/chanakya/templates/bill/view.php?status=pending" class="btn btn-primary btn-lg active" role="button">Pending bills</a>
+          <a href="http://chanakya.lab/templates/bill/view.php?status=pending" class="btn btn-primary btn-lg active" role="button">Pending bills</a>
         </div>
 
         <div class="col-sm-4 text-center ">
-          <a href="http://localhost/chanakya/chanakya/templates/bill/view.php?status=complete" class="btn btn-primary btn-lg active" role="button">Completed bills</a>
+          <a href="http://chanakya.lab/templates/bill/view.php?status=complete" class="btn btn-primary btn-lg active" role="button">Completed bills</a>
         </div>
         <div class="col-sm-4 text-center">
-          <a href="http://localhost/chanakya/chanakya/templates/bill/view.php?status=all" class="btn btn-primary btn-lg active" role="button">All bills</a>
+          <a href="http://chanakya.lab/templates/bill/view.php?status=all" class="btn btn-primary btn-lg active" role="button">All bills</a>
 
         </div>
     </div>

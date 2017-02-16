@@ -1,7 +1,18 @@
 <?php
-session_start();
 
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
+
+if($permission=="admin"||$permission=="laboratory")
+{
+
+}
+else
+{
+  die("Unauthorized access");
+}
+
 $bill_id=$_GET["id"];
 
 ?>

@@ -1,12 +1,23 @@
 <?php
-session_start();
+$root= realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
+
+require_once("$root/include/session_check.php");
+
+//empty the session array whenever this page is opened
 if(isset($_SESSION['bill_contents']))
 {
 
   $_SESSION['bill_contents']=array();
 }
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
 
+if($permission=="admin"||$permission=="reception")
+{
+
+}
+else
+{
+  die("Unauthorized access");
+}
 
 ?>
 <!--get the header-->
@@ -28,31 +39,37 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
 
                     $bills=new Helper();
 
+                    //get the last bill
                     $last_bills=$bills->getLastBill();
-
-                    
-
+                    //old bill exists, increase bill no counter
                     if(!empty($last_bills))
                     {
 
-                      $new_bill_no=$last_bills[0]['id']+1;
+                       $new_bill_no=$last_bills[0]['id']+1;
                  
-             ?>
+                     ?>
 
-            <span class="label label-primary" id="bill_no">Bill No. 
-            <?php 
+                     <span class="label label-primary" id="bill_no">Bill No. 
+                    <?php 
 
-           echo $new_bill_no;
-                
-            ?>
-              
+                     echo $new_bill_no;
+                  
+                    ?>
+                     </span>   
+                    <?php
 
-            </span>   
-            <?php
+                    }
+                    //empty bill records--show bill no 1
+                    else
+                    {
 
-            }
+                      ?>
+                      <span class="label label-primary" id="bill_no"></span>
+                      <?php
+                    }
             ?>        
             </h4>
+            <!--END showing bill no-->
 
             <h3 class="text-center">
               Create new bill
@@ -78,16 +95,15 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
     
     <hr>
     <div class="row">
-    <!--add test form-->
+
+
+    <!--add test,subtest,cost form-->
       <div class="col-sm-12">
 
-        <form class="form-inline" name="add_bill_form" id="add_bill_form" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+        <form class="form-inline" name="add_bill_form" id="add_bill_form">
 
-       
-
-           <!--role-->
            <div class="form-group" id="bill_test_group">
-            <label class="control-label" for="bill_test_name">Test&nbsp;&nbsp;</label>
+            <label class="control-label" for="bill_test_name">Test<span style="color:red;">*</span>&nbsp;&nbsp;</label>
              
             <div class="input-group" >
               
@@ -112,14 +128,16 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
                   }
                 ?>
                 </select>
+
             </div>
-            <p id="bill_test_name_err" style="color:red;"></p>
+            <p id="bill_test_name_err" style="height:20px;padding-left:50px;color:red;"></p>
       
            </div>
 
 
+
            <div class="form-group" id="bill_subtest_group" >
-            <label class="control-label"  for="bill_subtest_name">Subtest&nbsp;&nbsp;</label>
+            <label class="control-label"  for="bill_subtest_name">Subtest<span style="color:red;">*</span>&nbsp;&nbsp;</label>
              
             <div class="input-group">
 
@@ -127,34 +145,17 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
             
               <select class="form-control" name="bill_subtest_name" id="bill_subtest_name" disabled>
 
-                  
-                <!--
-                <?php 
-                   $subtests=new Helper();
-                   $available_subtests=$subtests->getSubTest();
-
-                   foreach($available_subtests as $single_subtest)
-                   {
-
-
-
-                ?>
-
-                  <option value="<?php echo $single_subtest['id'];?>"><?php echo $single_subtest['name'];?></option>
-                <?php
-                  }
-                ?>
-                -->
+               <!--content to be filled by AJAX-->
                 </select>
               
             </div>
-            <p id="bill_subtest_name_err" style="color:red;"></p>
+            <p id="bill_subtest_name_err" style="height:20px;padding-left:60px;color:red;"></p>
            </div>
 
 
             <div class="form-group">
 
-              <label class="control-label" for="bill_cost">Cost&nbsp;</label>
+              <label class="control-label" for="bill_cost">Cost<span style="color:red;">*</span>&nbsp;</label>
 
             <div class="input-group">
 
@@ -163,7 +164,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
 
              </div>
 
-             <p id="bill_cost_err" style="color:red;"></p>
+             <p id="bill_cost_err" style="height:20px;padding-left:60px;color:red;"></p>
 
             </div>
 
@@ -175,14 +176,9 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
             <button type="button" name="add_bill_item" id="add_bill_item" class="btn btn-primary">Add to bill</button>
             </div>
 
-             <p></p>
+             <p style="height:20px;"></p>
 
-            </div>
-            <!--
-            <button class="btn btn-danger" type="reset">Reset</button>
-            -->
-     
-            
+            </div>       
         </form>
 
 
@@ -191,7 +187,9 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
     
     </div><!--end row-->
     <hr>
-    <p id="bill_contents_err"></p>
+    
+
+
     <!--bill contents-->
     <div class="row">
     <div class="col-sm-12">
@@ -199,7 +197,8 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
         <!-- Default panel contents -->
         <div class="panel-heading text-center">Bill Contents</div>
         <div class="panel-body">
-          <p style="color:red;"></p>
+          <p id="bill_contents_err" class="text-center" style="color:red;"></p>
+        
         </div>
 
       <!-- Table -->
@@ -213,19 +212,13 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
                   <table class="table table-striped" id="bill_content_table">
-
                     <tr>
-                      
-                      <th style="width: 10px">#</th>
                       <th>Test</th>
                       <th>SubTest</th>
                       <th>Department</th>
                       <th>Cost</th>
                       <th></th>
-                    </tr>
-                   
-                    
-                  
+                    </tr>         
                   </table>
                 </div>
                 <!-- /.box-body -->
@@ -261,7 +254,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
         <div class="row" style="margin-left:15px;">
          <div class="col-sm-4">
            <div class="form-group">
-            <label class="control-label"  for="patient_name">Patient name</label>
+            <label class="control-label"  for="patient_name">Patient name<span style="color:red;">*</span></label>
              
             <div class="input-group">
 
@@ -269,8 +262,11 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
               <input type="text" class="form-control" name="patient_name">
 
             </div>
-            <p id="patient_name_err" style="color:red;"></p>
+            <p id="patient_name_err" style="height:20px;color:red;"></p>
            </div>
+          </div>
+
+          <div class="col-sm-1">
           </div>
 
           <div class="col-sm-4">
@@ -285,13 +281,16 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
               <input type="text" class="form-control" name="patient_contact">
 
             </div>
-            <p id="patient_contact_err" style="color:red;"></p>
+            <p id="patient_contact_err" style="height:20px;color:red;"></p>
            </div>
            </div>
 
-           <div class="col-sm-2">
+           <div class="col-sm-1">
+          </div>
+
+           <div class="col-sm-2" style="margin-left:40px;">
            <div class="form-group">
-            <label class="control-label"  for="patient_age">Age</label>
+            <label class="control-label"  for="patient_age">Age<span style="color:red;">*</span></label>
              
             <div class="input-group">
               
@@ -299,15 +298,15 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
               <input type="text" class="form-control" name="patient_age">
 
             </div>
-            <p id="patient_age_err" style="color:red;"></p>
+            <p id="patient_age_err" style="height:20px;color:red;"></p>
            </div>
            </div>
            </div>
 
            <div class="row" style="margin-left:15px;">
-           <div class="col-sm-4">
+           <div class="col-sm-2">
             <div class="form-group">
-            <label class="control-label "  for="patient_gender">Gender</label>
+            <label class="control-label "  for="patient_gender">Gender<span style="color:red;">*</span></label>
              
             <div class="input-group">
               
@@ -316,7 +315,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
               <input type="radio" name="patient_gender" value="female">Female
 
             </div>
-            <p id="patient_gender_err" style="color:red;"></p>
+            <p id="patient_gender_err" style="height:20px;color:red;"></p>
            </div>
            </div>
 
@@ -330,12 +329,12 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
             <span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
               <input type="email" class="form-control" name="patient_email">
             </div>
-            <p id="patient_email_err" style="color:red;"></p>
+            <p id="patient_email_err" style="height:20px;color:red;"></p>
            </div>
            </div>
 
 
-           <div class="col-sm-4">
+           <div class="col-sm-5" style="margin-left:30px;">
 
            <div class="form-group">
             <label class="control-label"  for="patient_address">Patient Addresss</label>
@@ -343,10 +342,10 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
             <div class="input-group">
 
             <span class="input-group-addon"><i class="fa fa-location-arrow" aria-hidden="true"></i></span>
-              <textarea  name="patient_address" class="form-control"></textarea>
+              <textarea  name="patient_address" class="form-control" cols="10"></textarea>
 
             </div>
-            <p id="patient_address_err" style="color:red;"></p>
+            <p id="patient_address_err" style="height:20px;color:red;"></p>
            </div>
            </div>
 
@@ -391,7 +390,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
         <div class="row" style="margin-left:15px;">
         <div class="col-sm-4">
           <div class="form-group">
-            <label class="control-label"  for="doctor_refer">Referenced By Doctor?</label>
+            <label class="control-label"  for="doctor_refer">Referenced By Doctor?<span style="color:red;">*</span></label>
              
             <div class="input-group">
               
@@ -400,7 +399,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
               <input type="radio" name="doctor_refer" value="no">No
 
             </div>
-            <p id="doctor_refer_err" style="color:red;"></p>
+            <p id="doctor_refer_err"  style="height:20px; margin-left:170px;color:red;"></p>
           </div>
           </div>
 
@@ -431,7 +430,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
             
               </select>
             </div>
-            <p id="bill_doctor_name_err" style="color:red;"></p>
+            <p id="bill_doctor_name_err"  style="height:20px; margin-left:100px;color:red;"></p>
           </div>
           </div>
           </div>

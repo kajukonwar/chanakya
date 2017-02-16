@@ -1,5 +1,8 @@
 <?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
+
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
 ?>
 <!--get the header-->
 <?php require_once("$root/include/header.php");?>
@@ -35,8 +38,8 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
       <div class="panel with-nav-tabs panel-default">
                 <div class="panel-heading ">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#test" data-toggle="tab">Edit tests</a></li>
-                            <li><a href="#subtest" data-toggle="tab">Edit subtests</a></li>
+                            <li class="active" style="margin-left:330px;"><a href="#test" data-toggle="tab" class="btn-primary">Edit tests</a></li>
+                            <li style="margin-left:30px;"><a href="#subtest" data-toggle="tab" class="btn-info">Edit subtests</a></li>
                            
                            
                         </ul>
@@ -82,7 +85,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
                   <td><?php echo $single_test['name'];?></td>
                   <td><?php echo $single_test['date_created'];?>
                   </td>
-                  <td><a href="http://localhost/chanakya/chanakya/templates/inventory/edit/test.php?test_id=<?php echo $single_test['id'];?>" role="button">Edit</a>
+                  <td><a href="http://chanakya.lab/templates/inventory/edit/test.php?test_id=<?php echo $single_test['id'];?>" role="button" class="btn btn-primary">Edit</a>
                   </td>                  
                   </tr> 
 
@@ -160,7 +163,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya/chanakya";
                   <td><?php echo $single_subtest['standard_price'];?></td>
                   <td><?php echo $single_subtest['date_created'];?>
                   </td>
-                  <td><a href="http://localhost/chanakya/chanakya/templates/inventory/edit/subtest.php?subtest_id=<?php echo $single_subtest['id'];?>" role="button">Edit</a>
+                  <td><a href="http://chanakya.lab/templates/inventory/edit/subtest.php?subtest_id=<?php echo $single_subtest['id'];?>" role="button" class="btn btn-primary">Edit</a>
                   </td>                  
                   </tr> 
 

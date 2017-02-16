@@ -1,5 +1,7 @@
 <?php
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
 
+require_once("$root/include/session_check.php");
 if($_SERVER["REQUEST_METHOD"]=="POST")
 {
 

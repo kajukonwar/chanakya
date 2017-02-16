@@ -1,5 +1,11 @@
 <?php
+$root= realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
+
+require_once("$root/include/session_check.php");
+
 require_once("$root/include/dbconfig.php");
+
+date_default_timezone_set('Asia/Kolkata');
 class Helper{
 
 	private $result=array();
@@ -336,7 +342,7 @@ class Helper{
   {
 
         $dbconfig=new Dbconfig();
-
+        date_default_timezone_set('Asia/Kolkata');
 
         try {
             $conn = new PDO("mysql:host=$dbconfig->hostname;dbname=$dbconfig->dbname", $dbconfig->username, $dbconfig->password);
@@ -386,7 +392,7 @@ class Helper{
   {
 
         $dbconfig=new Dbconfig();
-
+        date_default_timezone_set('Asia/Kolkata');
 
         try {
             $conn = new PDO("mysql:host=$dbconfig->hostname;dbname=$dbconfig->dbname", $dbconfig->username, $dbconfig->password);
@@ -394,10 +400,32 @@ class Helper{
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
 
-            // prepare          
-            $stmt = $conn->prepare("SELECT * FROM bill WHERE status=? AND DATE(created_on)=?");
-            $stmt->bindParam(1,$status);
-            $stmt->bindParam(2,$day);
+            // prepare    
+            if($status=="all")
+            {
+                $stmt = $conn->prepare("SELECT * FROM bill WHERE  DATE(created_on)=?");
+               
+                $stmt->bindParam(1,$day);
+            } 
+
+             if($status=="pending")
+            {
+                $stmt = $conn->prepare("SELECT * FROM bill WHERE status=? AND DATE(created_on)=?");
+
+                $stmt->bindParam(1,$status);
+                $stmt->bindParam(2,$day);
+            }   
+
+             if($status=="complete")
+            {
+                $stmt = $conn->prepare("SELECT * FROM bill WHERE status=? AND DATE(created_on)=?");
+
+                $stmt->bindParam(1,$status);
+                $stmt->bindParam(2,$day);
+            }  
+             
+
+            
         
             $stmt->execute();
 
@@ -425,7 +453,7 @@ class Helper{
 
         $dbconfig=new Dbconfig();
 
-
+        date_default_timezone_set('Asia/Kolkata');
         try {
             $conn = new PDO("mysql:host=$dbconfig->hostname;dbname=$dbconfig->dbname", $dbconfig->username, $dbconfig->password);
             // set the PDO error mode to exception
@@ -461,7 +489,7 @@ class Helper{
 
         $dbconfig=new Dbconfig();
 
-
+        date_default_timezone_set('Asia/Kolkata');
         try {
             $conn = new PDO("mysql:host=$dbconfig->hostname;dbname=$dbconfig->dbname", $dbconfig->username, $dbconfig->password);
             // set the PDO error mode to exception

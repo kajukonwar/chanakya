@@ -1,3 +1,8 @@
+<?php
+$root= realpath($_SERVER["DOCUMENT_ROOT"])."/chanakya";
+
+require_once("$root/include/session_check.php");
+?>
 <!DOCTYPE html>
 <html>
 <head>

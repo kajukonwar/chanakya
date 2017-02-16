@@ -1,5 +1,7 @@
-
 <?php
+$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once("$root/include/session_check.php");
 require_once("$root/include/dbconfig.php");
 class User{
 
@@ -38,6 +40,7 @@ class User{
           }
       }
       //email validation
+      /*
       if(empty($this->user_email))
       {
         $this->errors['email']="Please enter the email";
@@ -52,8 +55,24 @@ class User{
             }
 
       }
+      */
+
+      if(!empty($this->user_email))
+      {
+
+          $this->user_email=$this->test_input($this->user_email); 
+
+          if (!filter_var($this->user_email, FILTER_VALIDATE_EMAIL)) 
+          {
+              $this->errors['email']="Please enter a valid  email";
+          }
+
+      }
+      
+
 
       //contact validation
+      /*
       if(empty($this->user_contact))
       {
         $this->errors['contact']="Please enter the contact number";
@@ -70,8 +89,24 @@ class User{
 
       }
 
+      */
+
+
+
+      if(!empty($this->user_contact))
+      {
+          $this->user_contact=$this->test_input($this->user_contact); 
+
+            if (!preg_match("/^[0-9]{10}$/",$this->user_contact)) 
+            {
+              $this->errors['contact']="Please enter a valid  contact number";
+            }
+
+      }
+
 
       //address validation
+      /*
       if(empty($this->user_address))
       {
         $this->errors['address']="Please enter the address";
@@ -81,6 +116,13 @@ class User{
       {
             $this->user_address=$this->test_input($this->user_address); 
 
+      }
+      */
+
+      if(!empty($this->user_address))
+      {
+
+         $this->user_address=$this->test_input($this->user_address); 
       }
       
 
@@ -111,6 +153,7 @@ class User{
             $stmt = $conn->prepare($this->sql);
             $stmt->execute($this->params);
             
+            
             $count = $stmt->rowCount();
 
             if($count==1)
@@ -128,6 +171,26 @@ class User{
               return "error";
 
             }
+            
+
+            /*
+            $lastInsertId =$conn->lastInsertId();
+            
+                if($lastInsertId)
+                {
+
+                  $stmt=null;
+                  $conn=null;
+                  return "success";
+                }
+                else
+                {
+                  
+                  $stmt=null;
+                  $conn=null;
+                  return "error";
+                }
+                */
          
             
             }
@@ -375,6 +438,7 @@ class Doctor extends User
 
       parent::validate();
       //gender validation
+      /*
       if(empty($this->designation))
       {
         $this->errors['designation']="Please enter the designation";
@@ -384,8 +448,15 @@ class Doctor extends User
             $this->designation=$this->test_input($this->designation); 
 
       }
+      */
+
+      if(!empty($this->designation))
+      {
+        $this->designation=$this->test_input($this->designation); 
+      }
 
       //role validation
+      /*
       if(empty($this->hospital))
       {
         $this->errors['hospital']="Please enter the name of the practising hospital";
@@ -396,7 +467,13 @@ class Doctor extends User
             $this->hospital=$this->test_input($this->hospital); 
 
       }
+    */
 
+      if(!empty($this->hospital))
+      {
+
+          $this->hospital=$this->test_input($this->hospital);
+      }
 
        
      
