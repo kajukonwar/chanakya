@@ -1,6 +1,6 @@
 <?php
 
-$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+$root= realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
 
 require_once("$root/include/session_check.php");
 if($permission=="admin"||$permission=="laboratory")
@@ -17,7 +17,7 @@ if(isset($_SESSION['bill_contents']))
 
   $_SESSION['bill_contents']=array();
 }
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+$root = realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
 
 
 ?>
@@ -55,13 +55,13 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
     
     <div class="row">
         <div class="col-sm-12 text-center">
-          <a href="http://chanakya.lab/templates/report/view.php?status=pending" class="btn btn-primary btn-lg active" role="button">Pending reports</a>
+          <a href="http://localhost/chanakya/templates/report/view.php?status=pending" class="btn btn-primary btn-lg active" role="button">Pending reports</a>
 
 
-          <a href="http://chanakya.lab/templates/report/view.php?status=complete" class="btn btn-primary btn-lg active" role="button">Completed reports</a>
+          <a href="http://localhost/chanakya/templates/report/view.php?status=complete" class="btn btn-primary btn-lg active" role="button">Completed reports</a>
 
 
-          <a href="http://chanakya.lab/templates/report/view.php?status=all" class="btn btn-primary btn-lg active" role="button">All reports</a>
+          <a href="http://localhost/chanakya/templates/report/view.php?status=all" class="btn btn-primary btn-lg active" role="button">All reports</a>
 
         </div>
     </div>

@@ -8,7 +8,7 @@ else
 {
     $id=$_GET['b_id'];
 }
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+$root = realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
 
 require_once("$root/include/dbconfig.php");
 
@@ -21,7 +21,7 @@ function Header()
 {
     // Logo
     
-    $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+    $root = realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
 
     $image_url=$root."/dist/img/logo.png";
     $this->Image($image_url,80,5,50);

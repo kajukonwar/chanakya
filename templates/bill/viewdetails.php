@@ -1,5 +1,5 @@
 <?php
-$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+$root= realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
 
 require_once("$root/include/session_check.php");
 if($permission=="admin"||$permission=="reception")
@@ -242,7 +242,7 @@ else
                           </tr>
                         <?php
                        }
-                       else
+                       elseif($single_bill[0]['is_special']=="no")
                        {
 
                        	  $i=1;
@@ -279,6 +279,16 @@ else
 
                               $i++;
                           }
+                       }
+                       else
+                       {
+                        ?>
+                        <textarea id="bill_view_special_content">
+                          
+                          <?php echo $bill_contents[0]['special_bill_content'];?>
+                        </textarea>
+
+                        <?php
                        }
                      ?>
 

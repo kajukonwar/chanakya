@@ -26,6 +26,8 @@ else
  <!--get the sidebar-->
 <?php require_once("$root/include/sidebar.php");?>
 
+
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -83,7 +85,19 @@ else
 
     <!-- Main content -->
     <section class="content">
+<?php
 
+$url = "http://rosetta.shoutca.st:8181/api.php?xm=server.getstatus&f=json&a[username]=coffeepost&a[password]=cp_radio_s_coffeepost";
+
+$json = file_get_contents($url);
+
+//$result = json_decode($json);
+
+//var_dump($result);
+
+
+
+?>
     <!--show save result-->
     <?php require_once("$root/lib/include/user/add.php");?>
 
@@ -259,7 +273,7 @@ else
             <div class="input-group">
 
             <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="patient_name">
+              <input type="text" class="form-control" name="patient_name">  
 
             </div>
             <p id="patient_name_err" style="height:20px;color:red;"></p>

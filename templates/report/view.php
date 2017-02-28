@@ -1,6 +1,6 @@
 <?php
 
-$root= realpath($_SERVER["DOCUMENT_ROOT"]);
+$root= realpath($_SERVER["DOCUMENT_ROOT"]).'/chanakya';
 
 require_once("$root/include/session_check.php");
 
@@ -163,28 +163,79 @@ else
                                   <?php
                                     if($single_report['status']=="pending")
                                     {
-                                      ?>
 
-                                        <td><a href="http://chanakya.lab/templates/report/fill.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Fill Report</a>
-                                        </td>
+                                      switch($single_report['is_special'])
+                                      {
+
+
+                                          case "yes":
+
+                                      ?>
+                                              <td><a href="http://localhost/chanakya/templates/report/fill_special.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Fill Report</a>
+                                              </td>
+                                      <?php
+                                          break;
+
+                                          case "no":
+                                      ?>
+                                              <td><a href="http://localhost/chanakya/templates/report/fill.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Fill Report</a>
+                                              </td>
+                                        
 
                                       <?php
+                                          break;
+
+                                          default:
+
+                                      }
 
                                     }
 
                                     elseif($single_report['status']=="complete")
                                     {
 
+
+
+                                      switch($single_report['is_special'])
+                                      {
+
+
+                                          case "yes":
+
+                                      ?>
+                                               <td><a href="http://localhost/chanakya/templates/report/update_special.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Update Report</a>
+                                              </td>
+
+                                              <td><a href="http://localhost/chanakya/templates/report/viewDetails_special.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">View Details</a>
+                                              </td>
+
+                                              <td><a href="http://localhost/chanakya/lib/pdf/report.php?r_id=<?php echo $single_report['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print report</a>
+                                              </td>
+                                      <?php
+                                          break;
+
+                                          case "no":
+                                      ?>
+                                               <td><a href="http://localhost/chanakya/templates/report/update.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Update Report</a>
+                                              </td>
+
+                                              <td><a href="http://localhost/chanakya/templates/report/viewDetails.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">View Details</a>
+                                              </td>
+
+                                              <td><a href="http://localhost/chanakya/lib/pdf/report.php?r_id=<?php echo $single_report['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print report</a>
+                                              </td>
+                                        
+
+                                      <?php
+                                          break;
+
+                                          default:
+
+                                      }
+
                                       ?>
 
-                                        <td><a href="http://chanakya.lab/templates/report/update.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">Update Report</a>
-                                        </td>
-
-                                        <td><a href="http://chanakya.lab/templates/report/viewDetails.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">View Details</a>
-                                        </td>
-
-                                        <td><a href="http://chanakya.lab/lib/pdf/report.php?r_id=<?php echo $single_report['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print report</a>
-                                        </td>
+                                       
 
                                       <?php
 

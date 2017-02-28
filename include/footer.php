@@ -112,7 +112,69 @@
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
       CKEDITOR.replace( 'special_bill_editor' );
+
 </script>
+
+
+
+<!-- special bill print-->
+ <script>
+   CKEDITOR.replace( 'special_bill_pdf' );
+ 
+   $("#special_bill_print_button").on("click",function(){
+    var editor = CKEDITOR.instances.special_bill_pdf;   
+     editor.execCommand('print');
+
+   });
+  
+  </script>
+
+
+<!-- special report fill-->
+ <script>
+   CKEDITOR.replace( 'special_report_editor' );
+ 
+  </script>
+
+  <script>
+  // Replace the report print textarea
+    
+  CKEDITOR.replace( 'specil_report_print' );
+
+ </script>
+
+ <!-- special report print-->
+ <script>
+   
+ 
+   $("#special_report_print_button").on("click",function(){
+    var editor1 = CKEDITOR.instances.specil_report_print;   
+     editor1.execCommand('print');
+
+   });
+  
+  </script>
+
+  <script>
+// Replace the special report contents textarea
+    
+  CKEDITOR.replace( 'bill_view_special_content' );
+
+  </script>
+
+   <script>
+// special report update textarea
+    
+  CKEDITOR.replace( 'special_report_content' );
+
+  </script>
+
+   <script>
+// special report content view
+    
+  CKEDITOR.replace( 'special_report_content_view' );
+
+  </script>
 
 <script>
 $("#test").click(function()
@@ -391,27 +453,19 @@ $('input[type=radio][name=doctor_refer]').change(function() {
    if(this.value=="yes")
    {
     $("#bill_doctor_name").show();
-   }
-   else
-   {
-    $("#bill_doctor_name").hide();
-   }
-
-});
-
-// show/hide doctor name select dropdown for special/different format bill
-$('input[type=radio][name=doctor_refer]').change(function() {
-
-   if(this.value=="yes")
-   {
+    // show doctor name select dropdown for special/different format bill
     $("#special_bill_doctor_name").show();
    }
    else
    {
+    $("#bill_doctor_name").hide();
+    // hide doctor name select dropdown for special/different format bill
     $("#special_bill_doctor_name").hide();
    }
 
 });
+
+
 
 
 $('#save_bill').on('click',function() {
@@ -1053,4 +1107,26 @@ $.ajax({
    });
 
 });
+
+
+
+  //get radio meta data
+  /*
+ $.ajax({
+   url: 'https://rosetta.shoutca.st/external/rpc.php',
+   data: {m:'streaminfo.get',username:'coffeepost'},
+   jsonp: 'callback',
+   jsonpCallback: 'jsonpCallback',
+  success: function(data){
+        console.log("success");
+        console.log(data);
+      }
+});
+
+ function jsonCallback(json){
+  console.log(json);
+}
+*/
+
+
 </script>

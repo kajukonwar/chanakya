@@ -13,15 +13,7 @@ else
   die("Unauthorized access");
 }
 
-if(!isset($_GET["id"]))
-{
-  die("Error: Wrong query string");
-}
-else
-{
-
 $bill_id=$_GET["id"];
-}
 
 ?>
 <!--get the header-->
@@ -34,10 +26,14 @@ $bill_id=$_GET["id"];
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1 class="text-center">
-        Reports
-        
-      </h1>
+      <div class="panel panel-primary">
+      <div class="panel-heading">
+            <h3 class="text-center">
+              VIEW REPORT DETAILS
+              
+            </h3>
+        </div>
+        </div>
       
     </section>
 
@@ -51,12 +47,19 @@ $bill_id=$_GET["id"];
     <!--include helper class-->
 
     <?php require_once("$root/lib/classes/class.helper.php");?>
+
+
+
+        <?php
+          $bill=new Helper();
+          $single_bill=$bill->getSinglebill($bill_id);
+
+        ?>
     
     <div class="row">
         <div class="col-sm-12">
-        <form action="#" method="POST" id="report_edit_form">
+        <form action="#" method="POST">
 
-        <input type="hidden" name="current_bill_id" value="<?php echo $bill_id;?>">
             <!-- Table -->
        <div class="box">
       
@@ -65,14 +68,7 @@ $bill_id=$_GET["id"];
                 <div class="box-body no-padding">
                   <table class="table table-striped" id="bill_content_table">
 
-                    <tr>
-                      
-                      <th>Test</th>
-                      <th>Subtest</th>
-                      <th>Default value</th>
-                      <th>Result</th>
-                      <th>Unit</th>
-                    </tr>
+                    
                     
                     <?php
                         
@@ -85,8 +81,37 @@ $bill_id=$_GET["id"];
                           <td>There is no content for this report</td>
                         <?php
                        }
+                       elseif($single_bill[0]['is_special']=="yes")
+                       {
+
+                          foreach($bill_contents as $single_bill_content)
+                          {
+
+                                  $single_report_data=$Contents->getSingleReportContent($bill_id,$single_bill_content['id']);
+                          }
+
+                        ?>
+                           <textarea id="special_report_content_view" name="special_report_content_view">
+
+                                <?php if(isset($single_report_data))echo $single_report_data[0]['result'];?>
+
+                            </textarea>
+
+                        <?php
+                       }
                        else
                        {
+                        ?>
+
+                          <tr>                     
+                              <th>Test</th>
+                              <th>Subtest</th>
+                              <th>Default value</th>
+                              <th>Result</th>
+                              <th>Unit</th>
+                          </tr>
+
+                        <?php
 
                           foreach($bill_contents as $single_bill_content)
                           {
@@ -100,7 +125,7 @@ $bill_id=$_GET["id"];
                               {
                                 ?>
                                   <tr>
-                                  <td>There is error. please don't fill this report</td>
+                                  <td>There is error. please dont prcoess this report</td>
                                   </tr>
 
                                 <?php
@@ -112,7 +137,12 @@ $bill_id=$_GET["id"];
                                 <td><?php echo $single_test[0]['name'];?></td>
                                 <td><?php echo $single_subtest[0]['name'];?></td>
                                 <td><?php echo $single_subtest[0]['default_value'];?></td>
-                                <td><input type="text" name="<?php echo $single_bill_content['id'];?>"></td>
+                                <?php
+
+
+                                  $single_report_data=$Contents->getSingleReportContent($bill_id,$single_bill_content['id']);
+                                ?>
+                                <td><input type="text"  value="<?php echo $single_report_data[0]['result'];?>" disabled></td>
                                 <td><?php echo $single_subtest[0]['unit'];?></td>
                               </tr>
 
@@ -129,15 +159,10 @@ $bill_id=$_GET["id"];
                 <!-- /.box-body -->
               </div>
               <!-- /.box -->
-              <div class="text-center">
-              <button type="button" class="btn btn-primary btn-lg" id="report_save" name="report_save">Save</button> 
-
-              </div> 
+           
               </form>
         </div>
     </div>
-
-
 
 
     </section>
