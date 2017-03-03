@@ -120,9 +120,11 @@ if($_SERVER['REQUEST_METHOD']=="POST")
               <input type="hidden" name="subtest_id" value="<?php echo $subtest_id;?>">
 
                <!--report contents-->
+               <div class="text-center" style="width:7.65in;">
               <textarea  name="special_report_editor" id="special_report_editor" rows="10" cols="80">
                   
               </textarea>
+              </div>
 
 
               <p  style="height:20px;color:red;"><?php if(isset($s_report_validate)) echo $s_report_validate;?></p>

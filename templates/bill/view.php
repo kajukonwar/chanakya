@@ -162,11 +162,19 @@ else
                                   </td>
 
                                   <td><?php
-                                      
+                                      if($single_available_bill['is_special'])
+                                       {
+                                          ?>
+                                          <a href="http://chanakya.lab/lib/pdf/bill_special.php?b_id=<?php echo $single_available_bill['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print</a>
+                                        <?php
+                                        }
+                                        else
+                                        {
                                           ?>
                                           <a href="http://chanakya.lab/lib/pdf/bill.php?b_id=<?php echo $single_available_bill['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print</a>
-                                        <?php
-                                      
+
+                                         <?php
+                                        }
                                       ?>
                                   </td>
                                   </tr>

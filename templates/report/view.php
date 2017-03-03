@@ -209,7 +209,7 @@ else
                                               <td><a href="http://localhost/chanakya/templates/report/viewDetails_special.php?id=<?php echo $single_report['id'];?>" class="btn btn-primary" role="button">View Details</a>
                                               </td>
 
-                                              <td><a href="http://localhost/chanakya/lib/pdf/report.php?r_id=<?php echo $single_report['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print report</a>
+                                              <td><a href="http://localhost/chanakya/lib/pdf/report_special.php?r_id=<?php echo $single_report['id'];?>"  target="_blank" class="btn btn-primary" role="button">Print report</a>
                                               </td>
                                       <?php
                                           break;

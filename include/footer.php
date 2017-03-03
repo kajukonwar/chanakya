@@ -108,10 +108,15 @@
 <!--CK editor-->
 <!-- CK Editor -->
 <script src="/chanakya/plugins/ckeditor/ckeditor.js"></script>
+
+
 <script>
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
-      CKEDITOR.replace( 'special_bill_editor' );
+      CKEDITOR.replace( 'special_bill_editor',{
+    toolbar: 'CustomToolbar'
+    
+});
 
 </script>
 
@@ -119,7 +124,10 @@
 
 <!-- special bill print-->
  <script>
-   CKEDITOR.replace( 'special_bill_pdf' );
+   CKEDITOR.replace( 'special_bill_pdf',{
+    toolbar: 'CustomToolbar'
+    
+} );
  
    $("#special_bill_print_button").on("click",function(){
     var editor = CKEDITOR.instances.special_bill_pdf;   
@@ -132,14 +140,20 @@
 
 <!-- special report fill-->
  <script>
-   CKEDITOR.replace( 'special_report_editor' );
+   CKEDITOR.replace( 'special_report_editor',{
+    toolbar: 'CustomToolbar'
+    
+} );
  
   </script>
 
   <script>
   // Replace the report print textarea
     
-  CKEDITOR.replace( 'specil_report_print' );
+  CKEDITOR.replace( 'specil_report_print',{
+    toolbar: 'CustomToolbar'
+    
+} );
 
  </script>
 
@@ -158,23 +172,34 @@
   <script>
 // Replace the special report contents textarea
     
-  CKEDITOR.replace( 'bill_view_special_content' );
+  CKEDITOR.replace( 'bill_view_special_content',{
+    toolbar: 'CustomToolbar'
+    
+} );
 
   </script>
 
    <script>
 // special report update textarea
     
-  CKEDITOR.replace( 'special_report_content' );
+  CKEDITOR.replace( 'special_report_content',{
+    toolbar: 'CustomToolbar'
+    
+} );
 
   </script>
 
    <script>
 // special report content view
     
-  CKEDITOR.replace( 'special_report_content_view' );
+  CKEDITOR.replace( 'special_report_content_view',{
+    toolbar: 'CustomToolbar'
+    
+} );
 
   </script>
+
+  
 
 <script>
 $("#test").click(function()

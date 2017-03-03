@@ -19,7 +19,7 @@ die("Error: Wrong query URL");
 else
 {
  
-  $report_id=$_GET['r_id'];
+  $bill_id=$_GET['r_id'];
 }
 ?>
 <!--get the header-->
@@ -46,19 +46,7 @@ else
 
                   <div class="text-center">
 
-                              <section class="content-header">
-                                <div class="panel panel-primary">
-                                  <div class="panel-heading">
-                                      <h3 class="text-center">
-                                      
-                                        The report has been saved successfully 
-                                      </h3>
-                                  </div>
-                                </div>
-                                
-                              </section>
-                              
-                            
+                             
                             <section>
 
                             <?php
@@ -72,8 +60,8 @@ else
                                   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                                   // prepare          
-                                  $stmt = $conn->prepare("SELECT * FROM report WHERE id=?");
-                                  $stmt->bindParam(1,$report_id);
+                                  $stmt = $conn->prepare("SELECT * FROM report WHERE bill_id=?");
+                                  $stmt->bindParam(1,$bill_id);
                               
                                   $stmt->execute();
 
@@ -90,7 +78,7 @@ else
                                   echo "DB Connection failed: " . $e->getMessage();
                                   } 
 
-                                  $bill_id=$report_contents[0]['bill_id'];
+                                  
 
                                   //get patient details
 

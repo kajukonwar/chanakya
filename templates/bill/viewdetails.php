@@ -285,6 +285,8 @@ else
                         ?>
                         <textarea id="bill_view_special_content">
                           
+              
+          
                           <?php echo $bill_contents[0]['special_bill_content'];?>
                         </textarea>
 

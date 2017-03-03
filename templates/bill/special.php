@@ -110,11 +110,13 @@ if($_SERVER['REQUEST_METHOD']=="POST"&&isset($_POST['special_bill_save']))
        <form class="form-horizontal" name="add_special_bill" id="add_special_bill" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
    
           <!--bill contents-->
-            <textarea  name="special_bill_editor" id="special_bill_editor" rows="10" cols="80">
+          <div class="text-center" style="width:7.65in;">
+            <textarea  name="special_bill_editor" id="special_bill_editor" >
                 <?php if(isset($validate['special_bill_editor'])) echo $validate['special_bill_editor'];?>
                 
             </textarea>
             <p  style="height:20px;color:red;"><?php if(isset($validate['special_bill_editor_err'])) echo $validate['special_bill_editor_err'];?></p>
+            </div>
          <!--end bill content-->
        
          <!--Bill Cost-->
