@@ -1130,4 +1130,91 @@ if(isset($_POST['transaction_search']))
     echo json_encode($result);
 }//end --transaction search
 
+
+//begin-- total doctor reference search
+if(isset($_POST['d_reference_search']))
+{
+
+    parse_str($_POST['d_reference_search'], $data);
+
+
+    if(!empty($data['d_reference_search_date']))
+    {
+        //extract search date
+        $search_date=$data['d_reference_search_date'];
+
+        //store start date and end date into an array
+        $search_date=explode("-",$search_date);
+
+        $start_date=str_replace("/","-",$search_date[0]);
+        $end_date=str_replace("/","-",$search_date[1]);
+    }
+
+    
+
+    //validation--any of one input is empty
+    if(empty($data["d_reference_doctor_id"])||empty($data["d_reference_search_date"]))
+    {
+        $result="error";
+
+    }
+    //End-- all empty
+    else
+    {
+         
+     
+            $query="SELECT * FROM bill WHERE doctor_id=?  AND DATE(created_on) BETWEEN CAST(? AS DATE) AND CAST(? AS DATE)";
+
+            $params[]=$data["d_reference_doctor_id"];
+            $params[]=$start_date;
+            $params[]=$end_date;
+        
+        //end making query
+
+
+         $dbconfig=new Dbconfig();
+    try {
+            $conn = new PDO("mysql:host=$dbconfig->hostname;dbname=$dbconfig->dbname", $dbconfig->username, $dbconfig->password);
+            // set the PDO error mode to exception
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // prepare and bind
+            
+            $stmt = $conn->prepare($query);
+            $stmt->execute($params);
+            $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                //get the total cost
+                if(!empty($result))
+                {
+                    
+                    $d_reference=new Helper();
+                    $d_reference_value=$d_reference->get_transaction_bills($result);
+
+                    $new_result=array();
+                    $new_result['bills']=$result;
+                    $new_result['total_value']=$d_reference_value;
+                    $result=$new_result;
+
+                }
+                else
+                {
+                    $result="empty";
+                }
+
+            }
+        catch(PDOException $e)
+            {
+            echo "DB Connection failed: " . $e->getMessage();
+            } 
+    }//end else
+    
+
+    
+
+   
+
+    echo json_encode($result);
+}//end --total doctor reference search
+
 ?>

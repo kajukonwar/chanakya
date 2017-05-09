@@ -92,6 +92,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
             <li><a href="http://chanakya.lab/templates/doctor/edit/edit.php">Edit doctors</a></li>
             <li><a href="http://chanakya.lab/templates/doctor/view/view.php">View doctors</a></li>
             <li><a href="http://chanakya.lab/templates/doctor/delete/delete.php">Delete doctors</a></li>
+            <li><a href="http://chanakya.lab/templates/doctor/references/references.php">View doctor references</a></li>
           </ul>
         </li>
 

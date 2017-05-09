@@ -1000,11 +1000,91 @@ $.ajax({
 
 
 
-})
-   
+})//end bill search
+
+
+//total doctor reference search
+$("#d_reference_search_button").on('click',function(){
+
+var data=$("#d_reference_form").serialize();
+
+
+
+
+$.ajax({
+    type: "POST",
+    url: "http://chanakya.lab/lib/ajax.php",
+    data: {d_reference_search:data},
+  
+    success: function(result){
+  
+      var result=JSON.parse(result);
+     
+
+      
+      if(result=="error")
+      {
+        $("#d_reference_search_error").show();
+
+        $('#d_reference_total_value').html("");
+        $('#d_reference_total_value').hide();
+        $('#d_reference_bill_content_table').html("");
+
+      }
+      else if(result=="empty")
+      {
+        $("#d_reference_search_error").hide();
+        $('#d_reference_bill_content_table').html("");
+
+        $('#d_reference_total_value').html("");
+        $('#d_reference_total_value').hide();
+
+        $('#d_reference_bill_content_table').append('<tr><th>ID</th><th>Date</th><th>Status</th></tr>');
+
+        $('#d_reference_bill_content_table').append('<tr><td>No results found</td></tr>');
+      }
+      else
+      {
+
+          $("#d_reference_search_error").hide();
+
+          $('#d_reference_total_value').html("");
+          $('#d_reference_total_value').append(' <h3>Total References: Rs. '+result.total_value+'</h3>');
+          $('#d_reference_total_value').show();
+
+          $('#d_reference_bill_content_table').html("");
+          $('#d_reference_bill_content_table').append('<tr><th>ID</th><th>Date</th><th>Status</th></tr>');
+
+           $.each(result.bills, function( key, value ) {
+        
+              
+              
+               $('#d_reference_bill_content_table').append('<tr><td>'+value.id+'</td>'+'<td>'+value.created_on+'</td><td>'+value.status+'</td></tr>');
+               
+          })
+      }
+      
+     
+
+    }
+   });
+
+
+
+})//end total doctor reference search
 
 
     $("#bill_search_date").daterangepicker({
+
+      locale:{
+
+        format:'YYYY/MM/DD'
+      }
+   
+    });
+
+    //total doctor reference search date
+    $("#d_reference_search_date").daterangepicker({
 
       locale:{
 
